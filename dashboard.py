@@ -515,7 +515,9 @@ def update_visuals(n):
     infig = go.FigureWidget()
 
     # Dataset Creation a
+    vehicleslastminute_prev = 0
     vehicleslastminute = 0
+    vehicleslastminute_delta = 0
     vehiclestotal = 0
     df = pd.DataFrame(Main)
 
@@ -558,7 +560,9 @@ def update_visuals(n):
             fig2.add_scatter(name=col, x=df['Time'], y=df[col].cumsum(), fill='tonexty',
                              showlegend=True,
                              line_shape='spline', line=dict(shape='linear', color='#CB0C9F', width=5))
+            vehicleslastminute_prev = vehicleslastminute
             vehicleslastminute += df[col].values[-1]
+            vehicleslastminute_delta = vehicleslastminute - vehicleslastminute_prev
             vehiclestotal += df[col].cumsum().values[-1]
             values_sum.append(df[col].sum())
 
@@ -588,7 +592,7 @@ def update_visuals(n):
         ))
 
     cards = [
-        dbc.Col(create_card(Header="Vehicles Rate", Value=vehicleslastminute,Second_Value=5, cardcolor="primary",icon_thumb=iconz)),
+        dbc.Col(create_card(Header="Vehicles Rate", Value=vehicleslastminute,Second_Value=vehicleslastminute_delta, cardcolor="primary",icon_thumb=iconz)),
         dbc.Col(create_card(Header="Total Vehicles", Value=vehiclestotal,Second_Value=5, cardcolor="info",icon_thumb=Traffic_icon)),
         dbc.Col(create_card(Header="FPS", Value=fps, cardcolor="secondary",Second_Value=5,icon_thumb=FPS_icon)),
         dbc.Col(create_card(Header="Resolution", Value=res, cardcolor="warning",Second_Value=stream,icon_thumb=cctv_icon)),
