@@ -70,6 +70,9 @@ sidebar = html.Div(
 # Variables
 ValueMoney = 59000
 iconz = DashIconify(icon="ic:twotone-directions-car", width=47, color="white")
+Traffic_icon = DashIconify(icon="carbon:traffic-event", width=47, color="white")
+FPS_icon = DashIconify(icon="ic:baseline-speed", width=47, color="white")
+cctv_icon = DashIconify(icon="bxs:cctv", width=47, color="white")
 
 dark = True
 if dark:
@@ -138,6 +141,7 @@ def update_layout1(figure, title, margin):
     )
     return figure
 
+
 def update_layout2(figure, title, margin):
     figure.update_layout(
         title=title,
@@ -166,7 +170,8 @@ def update_layout2(figure, title, margin):
     )
     return figure
 
-def update_layout3(figure, title, margin,GraphTick):
+
+def update_layout3(figure, title, margin, GraphTick):
     figure.update_layout(
         title=title,
         xaxis=dict(automargin=False, showgrid=False, zeroline=False, showline=True, linecolor='white',
@@ -193,6 +198,7 @@ def update_layout3(figure, title, margin,GraphTick):
 
     )
     return figure
+
 
 # -------------------------------------------------Getting Video Feeds ------------------------------#
 
@@ -245,7 +251,7 @@ def video_feed():
 # Card Compnent
 
 
-def create_card(Header, Value, cardcolor):
+def create_card(Header, Value,Second_Value, cardcolor,icon_thumb):
     card = html.Div(
         html.Div([
             html.Div([
@@ -256,11 +262,11 @@ def create_card(Header, Value, cardcolor):
                                    className="text-sm mb-0 text-capitalize font-weight-bold"),
                             html.H5(Value, className="font-weight-bolder mb-0")
                         ], className="numbers"),
-                        html.Span(["+55%"], className="text-success text-sm font-weight-bolder"),
+                        html.Span([Second_Value], className="text-success text-sm font-weight-bolder"),
                     ], className="col-8"),
                     html.Div([
                         html.Div([
-                            iconz
+                            icon_thumb
                         ], className="icon icon-shape bg-gradient-primary shadow text-center border-radius-md")
                     ], className="col-4 text-end")
                 ], className="row")
@@ -276,7 +282,7 @@ videofeeds = html.Div([
     html.Div([
         html.Div([
             html.Img(src="/video_feed", style={
-                #'max-width': '100%',
+                # 'max-width': '100%',
                 'height': 'auto',
                 'display': 'block',
             }),
@@ -315,7 +321,6 @@ figure2 = html.Div([
         ], className="row")
     ], className="card-body p-3")
 ], className="card mb-4")
-
 
 piefig = html.Div([
     html.Div([
@@ -356,7 +361,6 @@ infig = html.Div([
         ], className="row")
     ], className="card-body p-3")
 ], className="card mb-4")
-
 
 fps = 0
 res = "-"
@@ -543,7 +547,8 @@ def update_visuals(n):
 
         # Speed Fig Add Scatter 
         for col in columns1:
-            speedfig.add_scatter(name=col, x=df1['Time'], y=df1[col], fill="tonexty", line_shape="spline",line=dict(shape='linear', color='#3A416F', width=5))
+            speedfig.add_scatter(name=col, x=df1['Time'], y=df1[col], fill="tonexty", line_shape="spline",
+                                 line=dict(shape='linear', color='#3A416F', width=5))
 
         # Looping for adding scatter for each category
         values_sum = []
@@ -583,17 +588,15 @@ def update_visuals(n):
         ))
 
     cards = [
-        dbc.Col(create_card(Header="Vehicles Rate", Value=vehicleslastminute, cardcolor="primary")),
-        dbc.Col(create_card(Header="Total Vehicles", Value=vehiclestotal, cardcolor="info")),
-
-        dbc.Col(create_card(Header="FPS", Value=fps, cardcolor="secondary")),
-        dbc.Col(create_card(Header="Resolution", Value=res, cardcolor="warning")),
+        dbc.Col(create_card(Header="Vehicles Rate", Value=vehicleslastminute,Second_Value=5, cardcolor="primary",icon_thumb=iconz)),
+        dbc.Col(create_card(Header="Total Vehicles", Value=vehiclestotal,Second_Value=5, cardcolor="info",icon_thumb=Traffic_icon)),
+        dbc.Col(create_card(Header="FPS", Value=fps, cardcolor="secondary",Second_Value=5,icon_thumb=FPS_icon)),
+        dbc.Col(create_card(Header="Resolution", Value=res, cardcolor="warning",Second_Value=stream,icon_thumb=cctv_icon)),
         # dbc.Col(create_card(Header="Stream", Value=stream, cardcolor="danger")),
 
     ]
 
-    stack =[dbc.Col(piefig), dbc.Col(sunfig), dbc.Col(dirfig)],  # stack of data
-
+    stack = [dbc.Col(piefig), dbc.Col(sunfig), dbc.Col(dirfig)],  # stack of data
 
     infig = go.FigureWidget(
         go.Indicator(
@@ -601,7 +604,7 @@ def update_visuals(n):
             value=average_speed,
             mode="gauge+number+delta",
             title={'text': ""},
-            delta={'reference': previous_av_speed,'increasing': {'color': "red"},'decreasing': {'color': "green"}},
+            delta={'reference': previous_av_speed, 'increasing': {'color': "red"}, 'decreasing': {'color': "green"}},
             gauge={'axis': {'range': [None, 50]},
                    'bar': {'color': "#CB0C9F"},
                    'bordercolor': "white",
@@ -615,16 +618,16 @@ def update_visuals(n):
 
     # Updating the layout
     fig1 = update_layout1(figure=fig1, title='Traffic per Minute', margin=dict(t=0, b=00, r=00, l=0))
-    fig2 = update_layout3(figure=fig2, title='Cumulative Traffic', GraphTick=1,margin=dict(t=20, b=20, r=20, l=20))
+    fig2 = update_layout3(figure=fig2, title='Cumulative Traffic', GraphTick=1, margin=dict(t=20, b=20, r=20, l=20))
     speedfig = update_layout3(figure=speedfig, title='Average Speed Flow by Vehicle Type', GraphTick=20,
-                             margin=dict(t=20, b=20, r=20, l=20))
+                              margin=dict(t=20, b=20, r=20, l=20))
     dirfig = update_layout2(figure=dirfig, title="Average Speed Direction Flow", margin=dict(t=40, b=10, r=10, l=10))
     sunfig = update_layout2(figure=sunfig, title="Traffic Direction Flow", margin=dict(t=30, b=10, r=60, l=10))
     infig = update_layout2(figure=infig, title="Average Speed Km/h", margin=dict(t=40, b=10, r=10, l=10))
     piefig = update_layout2(figure=piefig, title="Traffic Distribution - Vehicle Type",
-                           margin=dict(t=30, b=10, r=60, l=10))
+                            margin=dict(t=30, b=10, r=60, l=10))
 
-    return fig1,fig2, cards, piefig, dirfig, sunfig, speedfig, infig
+    return fig1, fig2, cards, piefig, dirfig, sunfig, speedfig, infig
 
 
 # ===============================
@@ -633,27 +636,25 @@ def update_visuals(n):
 progress = dbc.Progress(value=25)
 
 app.layout = html.Div([sidebar,
-    # Input for all the updating visuals
-    dcc.Interval(id='visual-update', interval=1000, n_intervals=0),
-    dbc.Container([
-        dbc.Row([header, dbc.Col(children=[offcanvas])]),  # Header
-        dbc.Row(id="cards"),
-        dbc.Row([dbc.Col(videofeeds),dbc.Col(figure1)]),
-        dbc.Row([dbc.Col(figure2)]),  # VideoFeed and 2 Graphs
-        dbc.Row([dbc.Col(piefig),dbc.Col(sunfig),dbc.Col(infig)]),  # Header
-        dbc.Row([dbc.Col(speedfig), dbc.Col(dirfig)]),  # Header
-        dash_dangerously_set_inner_html.DangerouslySetInnerHTML('''
+                       # Input for all the updating visuals
+                       dcc.Interval(id='visual-update', interval=1000, n_intervals=0),
+                       dbc.Container([
+                           dbc.Row([header, dbc.Col(children=[offcanvas])]),  # Header
+                           dbc.Row(id="cards"),
+                           dbc.Row([dbc.Col(videofeeds), dbc.Col(figure1)]),
+                           dbc.Row([dbc.Col(figure2)]),  # VideoFeed and 2 Graphs
+                           dbc.Row([dbc.Col(piefig), dbc.Col(sunfig), dbc.Col(infig)]),  # Header
+                           dbc.Row([dbc.Col(speedfig), dbc.Col(dirfig)]),  # Header
+                           dash_dangerously_set_inner_html.DangerouslySetInnerHTML('''
               <h1>Header</h1>
           '''),
-    ]),
+                       ]),
 
-    dbc.Container(
-        progress
-    ),
+                       dbc.Container(
+                           progress
+                       ),
 
-])
-
-
+                       ])
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8050)
