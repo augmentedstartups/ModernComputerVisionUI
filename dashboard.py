@@ -275,7 +275,7 @@ def create_card(Header, Value,Second_Value, cardcolor,icon_thumb):
                                    className="text-sm mb-0 text-capitalize font-weight-bold"),
                             html.H5(Value, className="font-weight-bolder mb-0")
                         ], className="numbers"),
-                        html.Span([Second_Value], className="text-success text-sm font-weight-bolder"),
+                        html.Span([Second_Value], className="text-red text-sm font-weight-bolder"),
                     ], className="col-8"),
                     html.Div([
                         html.Div([
@@ -287,6 +287,8 @@ def create_card(Header, Value,Second_Value, cardcolor,icon_thumb):
         ], className="card mb-4")
     )
     return card
+
+
 
 
 # Video Feed Component

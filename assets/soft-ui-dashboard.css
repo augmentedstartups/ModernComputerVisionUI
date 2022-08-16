@@ -9639,6 +9639,14 @@ textarea.form-control-lg {
   color: #82d616 !important;
 }
 
+.text-green {
+  color: #CB0C9F !important;
+}
+
+.text-red {
+  color: #CB0C9F !important;
+}
+
 .text-info {
   color: #17c1e8 !important;
 }
