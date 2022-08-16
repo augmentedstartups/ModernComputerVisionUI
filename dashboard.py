@@ -125,7 +125,6 @@ def update_layout1(figure, title, margin):
         showlegend=False,
         paper_bgcolor='rgba(255,0,0 ,0)',
         plot_bgcolor='rgba(255,0,0,0)',
-        # legend_font_color="#B3BAC0", titlefont=dict(color="red")
         width=600,
         height=338,
         autosize=False,
@@ -156,11 +155,6 @@ def update_layout2(figure, title, margin):
         showlegend=False,
         paper_bgcolor='rgba(255,0,0 ,0)',
         plot_bgcolor='rgba(255,0,0,0)',
-        # legend_font_color="#B3BAC0", titlefont=dict(color="red")
-        # width=338,
-        # height=438,
-        # width=600,
-        # height=338,
         autosize=False,
         margin=dict(
             l=50,
@@ -172,7 +166,7 @@ def update_layout2(figure, title, margin):
     )
     return figure
 
-def update_layout3(figure, title, margin,tick):
+def update_layout3(figure, title, margin):
     figure.update_layout(
         title=title,
         xaxis=dict(automargin=False, showgrid=False, zeroline=False, showline=True, linecolor='white',
@@ -182,18 +176,40 @@ def update_layout3(figure, title, margin,tick):
                    zerolinecolor='gray', zerolinewidth=1, linecolor='white', linewidth=1,
                    titlefont=dict(family='Arial, sans-serif', size=18, color='lightgrey'), showticklabels=True,
                    tickangle=0, tickfont=dict(family='Arial Black', size=14, color='#C2C6CC'),
-                   tickmode='linear', tick0=0.0, dtick=tick,
+                   tickmode='linear', tick0=0.0, dtick=1,
                    ),
         font_family="Arial Black",
         font_color="#201D4D",
         showlegend=False,
         paper_bgcolor='rgba(255,0,0 ,0)',
         plot_bgcolor='rgba(255,0,0,0)',
-        # legend_font_color="#B3BAC0", titlefont=dict(color="red")
-        #width=338,
-        #height=438,
-        # width=600,
-        # height=338,
+        autosize=False,
+        margin=dict(
+            l=50,
+            r=50,
+            b=40,
+            t=50,
+            pad=4, )
+
+    )
+    return figure
+def update_layout4(figure, title, margin):
+    figure.update_layout(
+        title=title,
+        xaxis=dict(automargin=False, showgrid=False, zeroline=False, showline=True, linecolor='white',
+                   showticklabels=True, gridwidth=1, zerolinecolor='white',
+                   tickfont=dict(family='Arial Black', size=14, color='#C2C6CC')),
+        yaxis=dict(showgrid=True, automargin=False, zeroline=False, showline=True, gridcolor='#E5E6E5', gridwidth=0.5,
+                   zerolinecolor='gray', zerolinewidth=1, linecolor='white', linewidth=1,
+                   titlefont=dict(family='Arial, sans-serif', size=18, color='lightgrey'), showticklabels=True,
+                   tickangle=0, tickfont=dict(family='Arial Black', size=14, color='#C2C6CC'),
+                   tickmode='linear', tick0=0.0, dtick=10,
+                   ),
+        font_family="Arial Black",
+        font_color="#201D4D",
+        showlegend=False,
+        paper_bgcolor='rgba(255,0,0 ,0)',
+        plot_bgcolor='rgba(255,0,0,0)',
         autosize=False,
         margin=dict(
             l=50,
@@ -627,8 +643,8 @@ def update_visuals(n):
     # Updating the layout
     fig1 = update_layout1(figure=fig1, title='Traffic per Minute', margin=dict(t=0, b=00, r=00, l=0))
     fig2 = update_layout3(figure=fig2, title='Cumulative Traffic', margin=dict(t=20, b=20, r=20, l=20))
-    speedfig = update_layout3(figure=speedfig, title='Average Speed Flow by Vehicle Type',
-                             margin=dict(t=20, b=20, r=20, l=20),tick=10)
+    speedfig = update_layout4(figure=speedfig, title='Average Speed Flow by Vehicle Type',
+                             margin=dict(t=20, b=20, r=20, l=20))
     dirfig = update_layout2(figure=dirfig, title="Average Speed Direction Flow", margin=dict(t=40, b=10, r=10, l=10))
     sunfig = update_layout2(figure=sunfig, title="Traffic Direction Flow", margin=dict(t=30, b=10, r=60, l=10))
     infig = update_layout2(figure=infig, title="Average Speed Km/h", margin=dict(t=40, b=10, r=10, l=10))
