@@ -69,7 +69,7 @@ sidebar = html.Div(
 
 # Variables
 fps_prev = 0
-fps_curr = 0
+fps_delta = '0';
 ValueMoney = 59000
 iconz = DashIconify(icon="ic:twotone-directions-car", width=47, color="white")
 Traffic_icon = DashIconify(icon="carbon:traffic-event", width=47, color="white")
@@ -223,21 +223,23 @@ class VideoCamera(object):
 
     def get_frame(self):
         global fps;
-        global fps_curr;
-        global fps_delta;
+
+        global fps_prev
+        global fps_delta
         success, image = self.video.read()
         if success:
+            fps_prev = fps
             t1 = time_synchronized()
             image = draw_lines(lines, image)
             image, bbox, data = tracker.update(image, logger_=False)
             image = vis_track(image, bbox)
             Main.extend(data)
-            fps_prev = fps_curr 
-            fps = f"{int((1. / (time_synchronized() - t1)))}"
-            fps_curr = (1. / (time_synchronized() - t1))
-
-            fps_delta = f"{int(abs((1. / (time_synchronized() - t1)) -fps_prev))}"
-            #fps_delta = fps
+            
+            fps = (1. / (time_synchronized() - t1))
+            try:
+                fps_delta = ((fps_prev -fps)/fps_prev)*100
+            except ZeroDivisionError:
+                fps_delta =  0
             ret, jpeg = cv2.imencode('.jpg', image)
             return jpeg.tobytes()
         else:
@@ -607,9 +609,8 @@ def update_visuals(n):
     cards = [
         dbc.Col(create_card(Header="Vehicles Rate", Value=vehicleslastminute,Second_Value=0, cardcolor="primary",icon_thumb=iconz)),
         dbc.Col(create_card(Header="Total Vehicles", Value=vehiclestotal,Second_Value=5, cardcolor="info",icon_thumb=Traffic_icon)),
-        dbc.Col(create_card(Header="FPS", Value=fps, cardcolor="secondary",Second_Value=fps_delta,icon_thumb=FPS_icon)),
+        dbc.Col(create_card(Header="FPS", Value=f"{int(fps)}", cardcolor="secondary",Second_Value=f"{int(fps_delta)}"+"%",icon_thumb=FPS_icon)),
         dbc.Col(create_card(Header="Resolution", Value=res, cardcolor="warning",Second_Value=stream,icon_thumb=cctv_icon)),
-        # dbc.Col(create_card(Header="Stream", Value=stream, cardcolor="danger")),
 
     ]
 
