@@ -561,7 +561,7 @@ def update_visuals(n):
         for col in columns:
             fig1.add_scatter(name=col, x=df['Time'], y=df[col], fill='tonexty', showlegend=True, line_shape='spline',
                              line=dict(shape='linear', color='#3A416F', width=5))
-            fig2.add_scatter(name=col, x=df['Time'], y=df[col].cumsum(), fill='tonexty', fillcolor="white",
+            fig2.add_scatter(name=col, x=df['Time'], y=df[col].cumsum(), fill='tonexty',
                              showlegend=True,
                              line_shape='spline', line=dict(shape='linear', color='#CB0C9F', width=5))
             vehicleslastminute += df[col].values[-1]
@@ -574,7 +574,7 @@ def update_visuals(n):
             color_discrete_sequence=px.colors.sequential.Agsunset, opacity=0.85
         )
 
-        dirfig = px.bar(dirdf, y="direction", x="Speed", color="direction", orientation="h", hover_name="direction",
+        dirfig = px.bar(dirdf, y="", x="Speed", color="direction", orientation="h", hover_name="direction",
                         color_discrete_map={
                             "North": "rgba(188,75,128,0.8)",
                             "South": 'rgba(26,150,65,0.5)',
@@ -627,7 +627,7 @@ def update_visuals(n):
     # Updating the layout
     fig1 = update_layout1(figure=fig1, title='Traffic per Minute', margin=dict(t=0, b=00, r=00, l=0))
     fig2 = update_layout3(figure=fig2, title='Cumulative Traffic', margin=dict(t=20, b=20, r=20, l=20))
-    speedfig = update_layout2(figure=speedfig, title='Average Speed Flow by Vehicle Type',
+    speedfig = update_layout3(figure=speedfig, title='Average Speed Flow by Vehicle Type',
                              margin=dict(t=20, b=20, r=20, l=20))
     dirfig = update_layout2(figure=dirfig, title="Average Speed Direction Flow", margin=dict(t=40, b=10, r=10, l=10))
     sunfig = update_layout2(figure=sunfig, title="Traffic Direction Flow", margin=dict(t=30, b=10, r=60, l=10))
