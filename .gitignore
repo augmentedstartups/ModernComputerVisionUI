@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+weights/yolox_l.pth
+weights/yolox_m.pth
+*.pth
+deep_sort/deep_sort/deep/checkpoint/ckpt.t7
