@@ -70,6 +70,9 @@ sidebar = html.Div(
 # Variables
 fps_prev = 0
 fps_delta = '0';
+vehiclestotal_prev = 0
+vehiclestotal_delta = '0';
+
 ValueMoney = 59000
 iconz = DashIconify(icon="ic:twotone-directions-car", width=47, color="white")
 Traffic_icon = DashIconify(icon="carbon:traffic-event", width=47, color="white")
@@ -222,10 +225,7 @@ class VideoCamera(object):
         cv2.destroyAllWindows()
 
     def get_frame(self):
-        global fps;
-
-        global fps_prev
-        global fps_delta
+        global fps,fps_prev,fps_delta
         success, image = self.video.read()
         if success:
             fps_prev = fps
@@ -523,6 +523,7 @@ It outputs the figures
 )
 def update_visuals(n):
     global average_speed, previous_av_speed
+    global vehiclestotal,vehiclestotal_prev,vehiclestotal_delta
     fig1 = go.FigureWidget()
     fig2 = go.FigureWidget()
     piefig = go.FigureWidget()
@@ -572,6 +573,7 @@ def update_visuals(n):
         # Looping for adding scatter for each category
         values_sum = []
         for col in columns:
+            vehiclestotal_prev = vehiclestotal
             fig1.add_scatter(name=col, x=df['Time'], y=df[col], fill='tonexty', showlegend=True, line_shape='spline',
                              line=dict(shape='linear', color='#3A416F', width=5))
             fig2.add_scatter(name=col, x=df['Time'], y=df[col].cumsum(), fill='tonexty',
@@ -581,6 +583,13 @@ def update_visuals(n):
             vehicleslastminute += df[col].values[-1]
             vehicleslastminute_delta = vehicleslastminute
             vehiclestotal += df[col].cumsum().values[-1]
+            if vehiclestotal >=1:
+                try:
+                    #vehiclestotal_delta = 500
+                    vehiclestotal_delta = ((vehiclestotal-vehiclestotal_prev)/vehiclestotal)*100
+                except ZeroDivisionError:
+                    vehiclestotal_delta  =  0
+
             values_sum.append(df[col].sum())
 
         piefig = px.pie(
@@ -610,7 +619,7 @@ def update_visuals(n):
 
     cards = [
         dbc.Col(create_card(Header="Vehicles Rate", Value=vehicleslastminute,Second_Value=0, cardcolor="primary",icon_thumb=iconz)),
-        dbc.Col(create_card(Header="Total Vehicles", Value=vehiclestotal,Second_Value=5, cardcolor="info",icon_thumb=Traffic_icon)),
+        dbc.Col(create_card(Header="Total Vehicles", Value=vehiclestotal,Second_Value=f"{int(vehiclestotal_delta)}"+"%", cardcolor="info",icon_thumb=Traffic_icon)),
         dbc.Col(create_card(Header="FPS", Value=f"{int(fps)}", cardcolor="secondary",Second_Value=f"{int(fps_delta)}"+"%",icon_thumb=FPS_icon)),
         dbc.Col(create_card(Header="Resolution", Value=res, cardcolor="warning",Second_Value=stream,icon_thumb=cctv_icon)),
 
