@@ -68,11 +68,15 @@ sidebar = html.Div(
 )
 
 # Variables
+fps_prev = 0
+fps_curr = 0
 ValueMoney = 59000
 iconz = DashIconify(icon="ic:twotone-directions-car", width=47, color="white")
 Traffic_icon = DashIconify(icon="carbon:traffic-event", width=47, color="white")
 FPS_icon = DashIconify(icon="ic:baseline-speed", width=47, color="white")
 cctv_icon = DashIconify(icon="bxs:cctv", width=47, color="white")
+
+
 
 dark = True
 if dark:
@@ -219,6 +223,8 @@ class VideoCamera(object):
 
     def get_frame(self):
         global fps;
+        global fps_curr;
+        global fps_delta;
         success, image = self.video.read()
         if success:
             t1 = time_synchronized()
@@ -226,7 +232,12 @@ class VideoCamera(object):
             image, bbox, data = tracker.update(image, logger_=False)
             image = vis_track(image, bbox)
             Main.extend(data)
+            fps_prev = fps_curr 
             fps = f"{int((1. / (time_synchronized() - t1)))}"
+            fps_curr = (1. / (time_synchronized() - t1))
+
+            fps_delta = f"{int(abs((1. / (time_synchronized() - t1)) -fps_prev))}"
+            #fps_delta = fps
             ret, jpeg = cv2.imencode('.jpg', image)
             return jpeg.tobytes()
         else:
@@ -448,6 +459,8 @@ def toggle_offcavas_scrollable(n1, is_open):
     Output("model-dropdown-head", "children"),
     [Input("yolox_s", "n_clicks"), Input("yolox_m", "n_clicks"), Input("yolox_l", "n_clicks")],
 )
+
+
 def update_label(n1, n2, n3):
     id_lookup = {"yolox_s": "YOLOX S", "yolox_m": "YOLOX M", "yolox_l": "YOLOX L"}
 
@@ -562,7 +575,7 @@ def update_visuals(n):
                              line_shape='spline', line=dict(shape='linear', color='#CB0C9F', width=5))
             vehicleslastminute_prev = vehicleslastminute
             vehicleslastminute += df[col].values[-1]
-            vehicleslastminute_delta = vehicleslastminute - vehicleslastminute_prev
+            vehicleslastminute_delta = vehicleslastminute
             vehiclestotal += df[col].cumsum().values[-1]
             values_sum.append(df[col].sum())
 
@@ -592,9 +605,9 @@ def update_visuals(n):
         ))
 
     cards = [
-        dbc.Col(create_card(Header="Vehicles Rate", Value=vehicleslastminute,Second_Value=vehicleslastminute_delta, cardcolor="primary",icon_thumb=iconz)),
+        dbc.Col(create_card(Header="Vehicles Rate", Value=vehicleslastminute,Second_Value=0, cardcolor="primary",icon_thumb=iconz)),
         dbc.Col(create_card(Header="Total Vehicles", Value=vehiclestotal,Second_Value=5, cardcolor="info",icon_thumb=Traffic_icon)),
-        dbc.Col(create_card(Header="FPS", Value=fps, cardcolor="secondary",Second_Value=5,icon_thumb=FPS_icon)),
+        dbc.Col(create_card(Header="FPS", Value=fps, cardcolor="secondary",Second_Value=fps_delta,icon_thumb=FPS_icon)),
         dbc.Col(create_card(Header="Resolution", Value=res, cardcolor="warning",Second_Value=stream,icon_thumb=cctv_icon)),
         # dbc.Col(create_card(Header="Stream", Value=stream, cardcolor="danger")),
 
