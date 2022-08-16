@@ -1,0 +1,21 @@
+ninja_required_version = 1.3
+cxx = c++
+
+cflags = -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -iwithsysroot/System/Library/Frameworks/System.framework/PrivateHeaders -iwithsysroot/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.8/Headers -arch arm64 -arch x86_64 -Werror=implicit-function-declaration -I/Users/riteshkanjee/Documents/dev/YOLOXDash/yolox_deepsort/yolox/layers/csrc -I/Users/riteshkanjee/Documents/dev/YOLOXDash/venv/lib/python3.8/site-packages/torch/include -I/Users/riteshkanjee/Documents/dev/YOLOXDash/venv/lib/python3.8/site-packages/torch/include/torch/csrc/api/include -I/Users/riteshkanjee/Documents/dev/YOLOXDash/venv/lib/python3.8/site-packages/torch/include/TH -I/Users/riteshkanjee/Documents/dev/YOLOXDash/venv/lib/python3.8/site-packages/torch/include/THC -I/Users/riteshkanjee/Documents/dev/YOLOXDash/venv/include -I/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.8/include/python3.8 -c
+post_cflags = -O3 -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_clang"' '-DPYBIND11_STDLIB="_libcpp"' '-DPYBIND11_BUILD_ABI="_cxxabi1002"' -DTORCH_EXTENSION_NAME=_C -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++14
+ldflags = 
+
+rule compile
+  command = $cxx -MMD -MF $out.d $cflags -c $in -o $out $post_cflags
+  depfile = $out.d
+  deps = gcc
+
+
+
+build /Users/riteshkanjee/Documents/dev/YOLOXDash/yolox_deepsort/build/temp.macosx-10.14-arm64-3.8/Users/riteshkanjee/Documents/dev/YOLOXDash/yolox_deepsort/yolox/layers/csrc/cocoeval/cocoeval.o: compile /Users/riteshkanjee/Documents/dev/YOLOXDash/yolox_deepsort/yolox/layers/csrc/cocoeval/cocoeval.cpp
+build /Users/riteshkanjee/Documents/dev/YOLOXDash/yolox_deepsort/build/temp.macosx-10.14-arm64-3.8/Users/riteshkanjee/Documents/dev/YOLOXDash/yolox_deepsort/yolox/layers/csrc/vision.o: compile /Users/riteshkanjee/Documents/dev/YOLOXDash/yolox_deepsort/yolox/layers/csrc/vision.cpp
+
+
+
+
+
