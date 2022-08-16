@@ -543,7 +543,7 @@ def update_visuals(n):
 
         # Speed Fig Add Scatter 
         for col in columns1:
-            speedfig.add_scatter(name=col, x=df1['Time'], y=df1[col], fill="tonexty", line_shape="spline")
+            speedfig.add_scatter(name=col, x=df1['Time'], y=df1[col], fill="tonexty", line_shape="spline",line=dict(shape='linear', color='#3A416F', width=5))
 
         # Looping for adding scatter for each category
         values_sum = []
