@@ -415,7 +415,7 @@ previous_av_speed = 0
 
 dropdown = dbc.Form(
     [
-        html.H6("Detection Model Selected :: YOLOX S", id="model-dropdown-head"),
+        html.H6("Detection Model Selected :: YOLOX S",style={'padding-bottom': '10px'}, id="model-dropdown-head"),
         dbc.DropdownMenu(
             label="YOLOX S",
             id='model-dropdown',
@@ -434,10 +434,10 @@ dropdown = dbc.Form(
 
 slider = dbc.Form(
     [
-        dbc.Label("Confidence", html_for="slider"),
-        dcc.Slider(id="slider", min=0, max=1, step=0.05, value=3, tooltip={"placement": "top", "always_visible": True},
-                   className="sl"),
-    ], style={'padding-top': '40px'}
+        html.H6("Confidence", id="sliders"),
+        dcc.Slider(id="slider", min=0, max=1, step=0.1, value=3, tooltip={"placement": "top", "always_visible": True},
+                   ),
+    ], style={'padding-top': '20px','padding-bottom': '20px'}
 )
 
 form = dbc.Form([dropdown, dbc.DropdownMenuItem(divider=True), slider, dbc.DropdownMenuItem(divider=True),
@@ -454,7 +454,7 @@ offcanvas = html.Div(children=[dbc.Button([html.I(className="bi bi-list"), ""],
 
                                dbc.Offcanvas(
                                    children=[
-                                       html.H2("Configuration Menu", style={'padding-bottom': "60px"}),
+                                       html.H2("Configuration Menu", style={'padding-bottom': "20px"}),
                                        form,
                                        html.Div(id='update_tracker')
                                    ],
@@ -466,7 +466,7 @@ offcanvas = html.Div(children=[dbc.Button([html.I(className="bi bi-list"), ""],
                                    keyboard=True,
                                    style={
                                        #'background-color': 'rgba(20,20,20,0.9)',
-                                       'width': '550px',
+                                       'width': '450px',
                                        'padding': "20px 40px 20px 40px"
 
                                    }
@@ -624,7 +624,7 @@ def update_visuals(n):
             color_discrete_sequence=px.colors.sequential.Agsunset, opacity=0.85
         )
 
-        dirfig = px.bar(dirdf,y = "direction", x="Speed",marker_line_width=0, color="direction" , orientation="h", hover_name="direction",
+        dirfig = px.bar(dirdf,y = "direction", x="Speed", color="direction" , orientation="h", hover_name="direction",
                         color_discrete_map={
                             "North": "#A5C8FA",
                             "South":"#76E3C1",
@@ -632,11 +632,7 @@ def update_visuals(n):
                             "West": "#7061F6"},
                         title="Average Speed Direction Flow"
                         )
-
-
     
-
-
         sunfig = go.FigureWidget(go.Sunburst(
             labels=df_all_trees['id'],
             parents=df_all_trees['parent'],
