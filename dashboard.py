@@ -677,7 +677,7 @@ def update_visuals(n):
 
     # Updating the layout
     fig1 = update_layout1(figure=fig1, title='Traffic per Minute', margin=dict(t=0, b=00, r=00, l=0))
-    fig2 = update_layout3(figure=fig2, title='Cumulative Traffic', GraphTick=1, margin=dict(t=20, b=20, r=20, l=20))
+    fig2 = update_layout3(figure=fig2, title='Cumulative Traffic', GraphTick=5, margin=dict(t=20, b=20, r=20, l=20))
     speedfig = update_layout3(figure=speedfig, title='Average Speed Flow by Vehicle Type', GraphTick=20,
                               margin=dict(t=20, b=20, r=20, l=20))
     dirfig = update_layout4(figure=dirfig, title="Average Speed Direction Flow", margin=dict(t=40, b=10, r=10, l=10))
