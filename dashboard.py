@@ -28,13 +28,21 @@ from dash_iconify import DashIconify
 
 import plotly.io as pio
 
+iconz = DashIconify(icon="ic:twotone-directions-car", width=47, color="white")
+Traffic_icon = DashIconify(icon="carbon:traffic-event", width=47, color="white")
+FPS_icon = DashIconify(icon="ic:baseline-speed", width=47, color="white")
+cctv_icon = DashIconify(icon="bxs:cctv", width=47, color="white")
+hamburger_icon = DashIconify(icon="charm:menu-hamburger", width=20, color="#CB0C9F")
+home_icon = DashIconify(icon="ant-design:home-twotone", width=30, color="#CB0C9F")
+model_icon = DashIconify(icon="eos-icons:ai", width=30, color="#CB0C9F")
+settings_icon = DashIconify(icon="ph:gear-duotone", width=30, color="#CB0C9F")
 # the style arguments for the sidebar. We use position:fixed and a fixed width
 SIDEBAR_STYLE = {
     "position": "fixed",
     "top": 0,
     "left": 0,
     "bottom": 0,
-    "width": "11rem",
+    "width": "10rem",
     "padding": "2rem 1rem",
     "background-color": "#F7F9FA",
 }
@@ -57,9 +65,14 @@ sidebar = html.Div(
         html.Hr([], className="horizontal dark mt-0"),
         dbc.Nav(
             [
-                dbc.NavLink("Dashboard", href="/", active="exact", className="nav-link-text ms-1"),
-                dbc.NavLink("Models", href="/page-1", active="exact", className="nav-link-text ms-1"),
-                dbc.NavLink("Settings", href="/page-2", active="exact", className="nav-link-text ms-1"),
+                html.Div([
+                    dbc.NavLink([dbc.Col(home_icon), ], href="/", active="exact", className="nav-link-text ms-1"),
+                    html.Hr([], className="horizontal dark mt-0"),
+                    dbc.NavLink([model_icon], href="https://www.augmentedstartups.com", active="exact", className="nav-link-text ms-1"),
+                    html.Hr([], className="horizontal dark mt-0"),
+                    dbc.NavLink([settings_icon], href="https://store.augmentedstartups.com", active="exact", className="nav-link-text ms-1"),
+                    html.Hr([], className="horizontal dark mt-0"),
+                ], style={ 'margin': 0, 'textAlign': 'center'}),
             ],
             vertical=True,
             pills=True,
@@ -73,13 +86,6 @@ fps_prev = 0
 fps_delta = '0';
 vehiclestotal_prev = 0
 vehiclestotal_delta = '0';
-
-ValueMoney = 59000
-iconz = DashIconify(icon="ic:twotone-directions-car", width=47, color="white")
-Traffic_icon = DashIconify(icon="carbon:traffic-event", width=47, color="white")
-FPS_icon = DashIconify(icon="ic:baseline-speed", width=47, color="white")
-cctv_icon = DashIconify(icon="bxs:cctv", width=47, color="white")
-hamburger_icon = DashIconify(icon="charm:menu-hamburger", width=20, color="#CB0C9F")
 
 dark = True
 if dark:
@@ -174,7 +180,6 @@ def update_layout2(figure, title, margin):
             b=40,
             t=50,
             pad=4, )
-
     )
     return figure
 
@@ -418,7 +423,7 @@ dropdown = dbc.Form(
         dbc.DropdownMenu(
             label="YOLOX S",
             id='model-dropdown',
-            menu_variant="dark",
+            menu_variant="light",
             children=[
                 dbc.DropdownMenuItem("YOLOX S", id="yolox_s"),
                 dbc.DropdownMenuItem(divider=True),
@@ -434,8 +439,7 @@ dropdown = dbc.Form(
 slider = dbc.Form(
     [
         html.H6("Confidence", id="sliders"),
-        dcc.Slider(id="slider", min=0, max=1, step=0.1, value=3, tooltip={"placement": "top", "always_visible": True},
-                   ),
+        dcc.Slider(id="slider", min=0, max=1, step=0.1, value=3, tooltip={"placement": "top", "always_visible": True}),
     ], style={'padding-top': '20px', 'padding-bottom': '20px'}
 )
 
@@ -447,8 +451,8 @@ offcanvas = html.Div(children=[dbc.Button([hamburger_icon],
                                           id="open-offcanvas-scrollable",
                                           n_clicks=0,
                                           outline=True,
-                                          style={ 'margin-top': '40px', 'margin-left': '100px', 'verticalAlign': 'top'}
-                                          #size="lg"
+                                          style={'margin-top': '40px', 'margin-left': '120px', 'verticalAlign': 'top'}
+                                          # size="lg"
                                           ),
                                dbc.Offcanvas(
                                    children=[
@@ -465,7 +469,6 @@ offcanvas = html.Div(children=[dbc.Button([hamburger_icon],
                                    style={
                                        'width': '450px',
                                        'padding': "20px 40px 20px 40px"
-
                                    }
                                )
                                ])
