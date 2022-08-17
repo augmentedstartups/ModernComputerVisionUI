@@ -16,6 +16,7 @@ import dash
 from dash import Dash, html, dcc, Input, Output, State
 import plotly.graph_objects as go
 import plotly.express as px
+import plotly.graph_objects as go
 
 from flask import Flask
 import dash_bootstrap_components as dbc
@@ -89,6 +90,9 @@ run_with_cloudflared(server)
 # Init Dash App
 # app = Dash(__name__, server = server, external_stylesheets=[dbc.themes.MORPH, dbc.icons.BOOTSTRAP,'https://fonts.googleapis.com/css2?family=Montserrat'])
 app = Dash(__name__, server=server, external_stylesheets=["assets/soft-ui-dashboard.css"])
+
+
+
 # Init Tracker
 tracker = Tracker(filter_classes=None, model='yolox-s', ckpt='weights/yolox_s.pth')
 
@@ -204,6 +208,34 @@ def update_layout3(figure, title, margin, GraphTick):
     )
     return figure
 
+def update_layout4(figure, title, margin):
+    figure.update_layout(
+        title=title,
+        xaxis=dict(automargin=False, showgrid=False, zeroline=False, showline=True, linecolor='white',
+                   showticklabels=True, gridwidth=1, zerolinecolor='white',
+                   tickfont=dict(family='Arial Black', size=14, color='#C2C6CC')),
+        yaxis=dict(showgrid=False, automargin=False, zeroline=False, showline=False, gridcolor='#E5E6E5', gridwidth=0.5,
+                   zerolinecolor='gray', zerolinewidth=1, linecolor='white', linewidth=1,
+                   titlefont=dict(family='Arial, sans-serif', size=18, color='lightgrey'), showticklabels=False,
+                   tickangle=0, tickfont=dict(family='Arial Black', size=14, color='#C2C6CC'),
+                    
+                   ),
+        font_family="Arial Black",
+        font_color="#201D4D",
+        showlegend=False,
+        paper_bgcolor='rgba(255,0,0 ,0)',
+        plot_bgcolor='rgba(255,0,0,0)',
+        autosize=False,
+        barmode='stack',
+        margin=dict(
+            l=50,
+            r=50,
+            b=40,
+            t=50,
+            pad=4, )
+
+    )
+    return figure
 
 # -------------------------------------------------Getting Video Feeds ------------------------------#
 
@@ -592,15 +624,18 @@ def update_visuals(n):
             color_discrete_sequence=px.colors.sequential.Agsunset, opacity=0.85
         )
 
-        dirfig = px.bar(dirdf, x="Speed", color="direction", orientation="h", hover_name="direction",
+        dirfig = px.bar(dirdf,y = "direction", x="Speed",marker_line_width=0, color="direction" , orientation="h", hover_name="direction",
                         color_discrete_map={
-                            "North": "rgba(188,75,128,0.8)",
-                            "South": 'rgba(26,150,65,0.5)',
-                            "East": 'rgba(64,167,216,0.8)',
-                            "West": "rgba(218,165,32,0.8)"},
+                            "North": "#A5C8FA",
+                            "South":"#76E3C1",
+                            "East": "#ED9A9C",
+                            "West": "#7061F6"},
                         title="Average Speed Direction Flow"
-
                         )
+
+
+    
+
 
         sunfig = go.FigureWidget(go.Sunburst(
             labels=df_all_trees['id'],
@@ -650,7 +685,7 @@ def update_visuals(n):
     fig2 = update_layout3(figure=fig2, title='Cumulative Traffic', GraphTick=1, margin=dict(t=20, b=20, r=20, l=20))
     speedfig = update_layout3(figure=speedfig, title='Average Speed Flow by Vehicle Type', GraphTick=20,
                               margin=dict(t=20, b=20, r=20, l=20))
-    dirfig = update_layout2(figure=dirfig, title="Average Speed Direction Flow", margin=dict(t=40, b=10, r=10, l=10))
+    dirfig = update_layout4(figure=dirfig, title="Average Speed Direction Flow", margin=dict(t=40, b=10, r=10, l=10))
     sunfig = update_layout2(figure=sunfig, title="Traffic Direction Flow", margin=dict(t=30, b=10, r=60, l=10))
     infig = update_layout2(figure=infig, title="Average Speed Km/h", margin=dict(t=40, b=10, r=10, l=10))
     piefig = update_layout2(figure=piefig, title="Traffic Distribution - Vehicle Type",
