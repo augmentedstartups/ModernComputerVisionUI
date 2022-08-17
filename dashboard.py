@@ -79,6 +79,7 @@ iconz = DashIconify(icon="ic:twotone-directions-car", width=47, color="white")
 Traffic_icon = DashIconify(icon="carbon:traffic-event", width=47, color="white")
 FPS_icon = DashIconify(icon="ic:baseline-speed", width=47, color="white")
 cctv_icon = DashIconify(icon="bxs:cctv", width=47, color="white")
+hamburger_icon = DashIconify(icon="charm:menu-hamburger", width=20, color="#CB0C9F")
 
 dark = True
 if dark:
@@ -90,8 +91,6 @@ run_with_cloudflared(server)
 # Init Dash App
 # app = Dash(__name__, server = server, external_stylesheets=[dbc.themes.MORPH, dbc.icons.BOOTSTRAP,'https://fonts.googleapis.com/css2?family=Montserrat'])
 app = Dash(__name__, server=server, external_stylesheets=["assets/soft-ui-dashboard.css"])
-
-
 
 # Init Tracker
 tracker = Tracker(filter_classes=None, model='yolox-s', ckpt='weights/yolox_s.pth')
@@ -208,6 +207,7 @@ def update_layout3(figure, title, margin, GraphTick):
     )
     return figure
 
+
 def update_layout4(figure, title, margin):
     figure.update_layout(
         title=title,
@@ -218,7 +218,7 @@ def update_layout4(figure, title, margin):
                    zerolinecolor='gray', zerolinewidth=1, linecolor='white', linewidth=1,
                    titlefont=dict(family='Arial, sans-serif', size=18, color='lightgrey'), showticklabels=False,
                    tickangle=0, tickfont=dict(family='Arial Black', size=14, color='#C2C6CC'),
-                    
+
                    ),
         font_family="Arial Black",
         font_color="#201D4D",
@@ -236,6 +236,7 @@ def update_layout4(figure, title, margin):
 
     )
     return figure
+
 
 # -------------------------------------------------Getting Video Feeds ------------------------------#
 
@@ -348,7 +349,7 @@ header = dbc.Col(width=10,
                                           )],
                      )]
                  )
-
+# Grpahical Components
 figure1 = html.Div([
     html.Div([
         html.Div([
@@ -372,8 +373,6 @@ piefig = html.Div([
         ], className="row")
     ], className="card-body p-3")
 ], className="card mb-4")
-
-# Grpahical Components
 
 dirfig = html.Div([
     html.Div([
@@ -415,7 +414,7 @@ previous_av_speed = 0
 
 dropdown = dbc.Form(
     [
-        html.H6("Detection Model Selected :: YOLOX S",style={'padding-bottom': '10px'}, id="model-dropdown-head"),
+        html.H6("Detection Model Selected :: YOLOX S", style={'padding-bottom': '10px'}, id="model-dropdown-head"),
         dbc.DropdownMenu(
             label="YOLOX S",
             id='model-dropdown',
@@ -437,21 +436,20 @@ slider = dbc.Form(
         html.H6("Confidence", id="sliders"),
         dcc.Slider(id="slider", min=0, max=1, step=0.1, value=3, tooltip={"placement": "top", "always_visible": True},
                    ),
-    ], style={'padding-top': '20px','padding-bottom': '20px'}
+    ], style={'padding-top': '20px', 'padding-bottom': '20px'}
 )
 
 form = dbc.Form([dropdown, dbc.DropdownMenuItem(divider=True), slider, dbc.DropdownMenuItem(divider=True),
                  dbc.Col(html.A(dbc.Button("run", id="run", color="primary")))])
 
 # ----------------------------------------Off Canvas Menu -----------------------------------------------------------#
-offcanvas = html.Div(children=[dbc.Button([html.I(className="bi bi-list"), ""],
+offcanvas = html.Div(children=[dbc.Button([hamburger_icon],
                                           id="open-offcanvas-scrollable",
                                           n_clicks=0,
-                                          color="danger",
                                           outline=True,
-                                          size="lg"
+                                          style={ 'margin-top': '40px', 'margin-left': '100px', 'verticalAlign': 'top'}
+                                          #size="lg"
                                           ),
-
                                dbc.Offcanvas(
                                    children=[
                                        html.H2("Configuration Menu", style={'padding-bottom': "20px"}),
@@ -465,13 +463,11 @@ offcanvas = html.Div(children=[dbc.Button([html.I(className="bi bi-list"), ""],
                                    is_open=False,
                                    keyboard=True,
                                    style={
-                                       #'background-color': 'rgba(20,20,20,0.9)',
                                        'width': '450px',
                                        'padding': "20px 40px 20px 40px"
 
                                    }
                                )
-
                                ])
 
 
@@ -624,15 +620,15 @@ def update_visuals(n):
             color_discrete_sequence=px.colors.sequential.Agsunset, opacity=0.85
         )
 
-        dirfig = px.bar(dirdf,y = "direction", x="Speed", color="direction" , orientation="h", hover_name="direction",
+        dirfig = px.bar(dirdf, y="direction", x="Speed", color="direction", orientation="h", hover_name="direction",
                         color_discrete_map={
                             "North": "#A5C8FA",
-                            "South":"#76E3C1",
+                            "South": "#76E3C1",
                             "East": "#ED9A9C",
                             "West": "#7061F6"},
                         title="Average Speed Direction Flow"
                         )
-    
+
         sunfig = go.FigureWidget(go.Sunburst(
             labels=df_all_trees['id'],
             parents=df_all_trees['parent'],
