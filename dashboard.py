@@ -57,8 +57,8 @@ sidebar = html.Div(
         dbc.Nav(
             [
                 dbc.NavLink("Dashboard", href="/", active="exact", className="nav-link-text ms-1"),
-                dbc.NavLink("Page 1", href="/page-1", active="exact", className="nav-link-text ms-1"),
-                dbc.NavLink("Page 2", href="/page-2", active="exact", className="nav-link-text ms-1"),
+                dbc.NavLink("Models", href="/page-1", active="exact", className="nav-link-text ms-1"),
+                dbc.NavLink("Settings", href="/page-2", active="exact", className="nav-link-text ms-1"),
             ],
             vertical=True,
             pills=True,
@@ -78,8 +78,6 @@ iconz = DashIconify(icon="ic:twotone-directions-car", width=47, color="white")
 Traffic_icon = DashIconify(icon="carbon:traffic-event", width=47, color="white")
 FPS_icon = DashIconify(icon="ic:baseline-speed", width=47, color="white")
 cctv_icon = DashIconify(icon="bxs:cctv", width=47, color="white")
-
-
 
 dark = True
 if dark:
@@ -225,7 +223,7 @@ class VideoCamera(object):
         cv2.destroyAllWindows()
 
     def get_frame(self):
-        global fps,fps_prev,fps_delta
+        global fps, fps_prev, fps_delta
         success, image = self.video.read()
         if success:
             fps_prev = fps
@@ -234,12 +232,12 @@ class VideoCamera(object):
             image, bbox, data = tracker.update(image, logger_=False)
             image = vis_track(image, bbox)
             Main.extend(data)
-            
+
             fps = (1. / (time_synchronized() - t1))
             try:
-                fps_delta = ((fps_prev -fps)/fps_prev)*100
+                fps_delta = ((fps_prev - fps) / fps_prev) * 100
             except ZeroDivisionError:
-                fps_delta =  0
+                fps_delta = 0
             ret, jpeg = cv2.imencode('.jpg', image)
             return jpeg.tobytes()
         else:
@@ -264,7 +262,7 @@ def video_feed():
 # Card Compnent
 
 
-def create_card(Header, Value,Second_Value, cardcolor,icon_thumb):
+def create_card(Header, Value, Second_Value, cardcolor, icon_thumb):
     card = html.Div(
         html.Div([
             html.Div([
@@ -287,8 +285,6 @@ def create_card(Header, Value,Second_Value, cardcolor,icon_thumb):
         ], className="card mb-4")
     )
     return card
-
-
 
 
 # Video Feed Component
@@ -437,7 +433,7 @@ offcanvas = html.Div(children=[dbc.Button([html.I(className="bi bi-list"), ""],
                                    is_open=False,
                                    keyboard=True,
                                    style={
-                                       'background-color': 'rgba(20,20,20,0.9)',
+                                       #'background-color': 'rgba(20,20,20,0.9)',
                                        'width': '550px',
                                        'padding': "20px 40px 20px 40px"
 
@@ -463,8 +459,6 @@ def toggle_offcavas_scrollable(n1, is_open):
     Output("model-dropdown-head", "children"),
     [Input("yolox_s", "n_clicks"), Input("yolox_m", "n_clicks"), Input("yolox_l", "n_clicks")],
 )
-
-
 def update_label(n1, n2, n3):
     id_lookup = {"yolox_s": "YOLOX S", "yolox_m": "YOLOX M", "yolox_l": "YOLOX L"}
 
@@ -523,7 +517,7 @@ It outputs the figures
 )
 def update_visuals(n):
     global average_speed, previous_av_speed
-    global vehiclestotal,vehiclestotal_prev,vehiclestotal_delta
+    global vehiclestotal, vehiclestotal_prev, vehiclestotal_delta
     fig1 = go.FigureWidget()
     fig2 = go.FigureWidget()
     piefig = go.FigureWidget()
@@ -583,12 +577,12 @@ def update_visuals(n):
             vehicleslastminute += df[col].values[-1]
             vehicleslastminute_delta = vehicleslastminute
             vehiclestotal += df[col].cumsum().values[-1]
-            if vehiclestotal >=1:
+            if vehiclestotal >= 1:
                 try:
-                    #vehiclestotal_delta = 500
-                    vehiclestotal_delta = ((vehiclestotal-vehiclestotal_prev)/vehiclestotal)*100
+                    # vehiclestotal_delta = 500
+                    vehiclestotal_delta = ((vehiclestotal - vehiclestotal_prev) / vehiclestotal) * 100
                 except ZeroDivisionError:
-                    vehiclestotal_delta  =  0
+                    vehiclestotal_delta = 0
 
             values_sum.append(df[col].sum())
 
@@ -618,10 +612,16 @@ def update_visuals(n):
         ))
 
     cards = [
-        dbc.Col(create_card(Header="Vehicles Rate", Value=vehicleslastminute,Second_Value=0, cardcolor="primary",icon_thumb=iconz)),
-        dbc.Col(create_card(Header="Total Vehicles", Value=vehiclestotal,Second_Value=f"{int(vehiclestotal_delta)}"+"%", cardcolor="info",icon_thumb=Traffic_icon)),
-        dbc.Col(create_card(Header="FPS", Value=f"{int(fps)}", cardcolor="secondary",Second_Value=f"{int(fps_delta)}"+"%",icon_thumb=FPS_icon)),
-        dbc.Col(create_card(Header="Resolution", Value=res, cardcolor="warning",Second_Value=stream,icon_thumb=cctv_icon)),
+        dbc.Col(
+            create_card(Header="Vehicles Rate", Value=vehicleslastminute, Second_Value="Vehicles", cardcolor="primary",
+                        icon_thumb=iconz)),
+        dbc.Col(
+            create_card(Header="Total Vehicles", Value=vehiclestotal, Second_Value=f"{int(vehiclestotal_delta)}" + "%",
+                        cardcolor="info", icon_thumb=Traffic_icon)),
+        dbc.Col(create_card(Header="FPS", Value=f"{int(fps)}", cardcolor="secondary",
+                            Second_Value=f"{int(fps_delta)}" + "%", icon_thumb=FPS_icon)),
+        dbc.Col(create_card(Header="Resolution", Value=res, cardcolor="warning", Second_Value=stream,
+                            icon_thumb=cctv_icon)),
 
     ]
 
@@ -668,15 +668,15 @@ app.layout = html.Div([sidebar,
                        # Input for all the updating visuals
                        dcc.Interval(id='visual-update', interval=1000, n_intervals=0),
                        dbc.Container([
-                           dbc.Row([header, dbc.Col(children=[offcanvas])]),  # Header
+                           dbc.Row([header, dbc.Col(offcanvas)]),  # Header
                            dbc.Row(id="cards"),
                            dbc.Row([dbc.Col(videofeeds), dbc.Col(figure1)]),
                            dbc.Row([dbc.Col(figure2)]),  # VideoFeed and 2 Graphs
                            dbc.Row([dbc.Col(piefig), dbc.Col(sunfig), dbc.Col(infig)]),  # Header
                            dbc.Row([dbc.Col(speedfig), dbc.Col(dirfig)]),  # Header
                            dash_dangerously_set_inner_html.DangerouslySetInnerHTML('''
-              <h1>Header</h1>
-          '''),
+                              <h1>Traffic Dash</h1>
+                           '''),
                        ]),
 
                        dbc.Container(
