@@ -2,7 +2,9 @@
 
 Hey guys, I'm excited to introduce a new module (Module 7) which is centered around upgrading your dashboard to a modern User Interface (UI)!
 
-This video is a demo of the new UI, that I built recently and you will get the files for this project at no extra cost!! 
+This video is a demo of the new UI, that I built recently!!
+
+[![Everything Is AWESOME](https://img.youtube.com/vi/StTqXEQ2l-Y/0.jpg)](https://www.youtube.com/watch?v=StTqXEQ2l-Y "Everything Is AWESOME")
 
 I will be adding lectures soon on the whole design process of modernizing the User Interface and why aesthetics in computer vision is important. 
 
@@ -32,7 +34,7 @@ git clone https://github.com/augmentedstartups/ModernComputerVisionUI.git
 
 Download YOLOX weights and deepsort folders from your original YOLOX Folder into the cloned folder called ModernComputerVisionUI.
 
-### Download the Models
+Download the Models
 
 |Model |size |mAP<sup>val<br>0.5:0.95 |mAP<sup>test<br>0.5:0.95 | Speed V100<br>(ms) | Params<br>(M) |FLOPs<br>(G)| weights |
 | ------        |:---: | :---:    | :---:       |:---:     |:---:  | :---: | :----: |
@@ -42,19 +44,12 @@ Download YOLOX weights and deepsort folders from your original YOLOX Folder into
 |[YOLOX-x](./exps/default/yolox_x.py)   |640   |51.1 |**51.5**  | 17.3    |99.1 |281.9 | [github](https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_x.pth) |
 |[YOLOX-Darknet53](./exps/default/yolov3.py)   |640  | 47.7 | 48.0 | 11.1 |63.7 | 185.3 | [github](https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_darknet.pth) |
 
-```
 
 ### Method 2
 
 Download the full project after enrolling in the full YOLOX Dashboard Course - Here https://www.augmentedstartups.com/yolox-pro-computer-vision-dashboard
-I would run it using PyCharm Community because we include the virtual environment (venv) that you can use to run the project.
 
-## Updates!!
-* 【2021/08/19】 We optimize the training process with **2x** faster training and **~1%** higher performance! See [notes](docs/updates_note.md) for more details.
-* 【2021/08/05】 We release [MegEngine version YOLOX](https://github.com/MegEngine/YOLOX).
-* 【2021/07/28】 We fix the fatal error of [memory leak](https://github.com/Megvii-BaseDetection/YOLOX/issues/103)
-* 【2021/07/26】 We now support [MegEngine](https://github.com/Megvii-BaseDetection/YOLOX/tree/main/demo/MegEngine) deployment.
-* 【2021/07/20】 We have released our technical report on [Arxiv](https://arxiv.org/abs/2107.08430).
+I would run it using PyCharm Community because we include the virtual environment (venv) that you can use to run the project.
 
 
 
