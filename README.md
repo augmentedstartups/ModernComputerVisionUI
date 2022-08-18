@@ -4,7 +4,7 @@ Hey guys, I'm excited to introduce a new module (Module 7) which is centered aro
 
 This video is a demo of the new UI, that I built recently!!
 
-[![Everything Is AWESOME](https://img.youtube.com/vi/StTqXEQ2l-Y/0.jpg)](https://www.youtube.com/watch?v=StTqXEQ2l-Y "Everything Is AWESOME")
+[![YOLOX Dashboard for Computer Vision](https://s3.amazonaws.com/kajabi-storefronts-production/themes/2149269545/settings_images/VmNQzmBUTxGCBLkHl3Ee_Screen_Shot_2022-08-18_at_09.12.33.png)](https://youtu.be/jwagFRSXiQw "Everything Is AWESOME")
 
 I will be adding lectures soon on the whole design process of modernizing the User Interface and why aesthetics in computer vision is important. 
 
@@ -29,7 +29,8 @@ There are 2 ways in which you can run this design:
 
 ### Method 1
 
-You can git clone the latest work from Github. 
+You can git clone the latest work from this Github. 
+
 git clone https://github.com/augmentedstartups/ModernComputerVisionUI.git
 
 Download YOLOX weights and deepsort folders from your original YOLOX Folder into the cloned folder called ModernComputerVisionUI.
