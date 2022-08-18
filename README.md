@@ -35,7 +35,7 @@ git clone https://github.com/augmentedstartups/ModernComputerVisionUI.git
 
 Download YOLOX weights and deepsort folders from your original YOLOX Folder into the cloned folder called ModernComputerVisionUI.
 
-Download the Models
+###Download the Models
 
 |Model |size |mAP<sup>val<br>0.5:0.95 |mAP<sup>test<br>0.5:0.95 | Speed V100<br>(ms) | Params<br>(M) |FLOPs<br>(G)| weights |
 | ------        |:---: | :---:    | :---:       |:---:     |:---:  | :---: | :----: |
@@ -48,7 +48,7 @@ Download the Models
 
 ### Method 2
 
-Download the full project after enrolling in the full YOLOX Dashboard Course - Here https://www.augmentedstartups.com/yolox-pro-computer-vision-dashboard
+Download the full project after enrolling in the full YOLOX Dashboard Course - [Here](https://www.augmentedstartups.com/yolox-pro-computer-vision-dashboard) 
 
 I would run it using PyCharm Community because we include the virtual environment (venv) that you can use to run the project.
 
